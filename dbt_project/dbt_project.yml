@@ -1,0 +1,31 @@
+name: 'elt_learning_project'
+version: '1.0.0'
+config-version: 2
+
+profile: 'elt_learning_project'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# ------------------------------------------------------------------
+# This is where dbt learns "which layer builds which materialization"
+# staging/  -> views  -> written into a schema called SILVER
+# marts/    -> tables -> written into a schema called GOLD
+# (the custom schema naming is handled by macros/generate_schema_name.sql)
+# ------------------------------------------------------------------
+models:
+  elt_learning_project:
+    staging:
+      +materialized: view
+      +schema: silver
+    marts:
+      +materialized: table
+      +schema: gold

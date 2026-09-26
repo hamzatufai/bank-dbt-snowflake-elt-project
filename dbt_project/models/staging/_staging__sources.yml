@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: raw
+    database: ELT_LEARNING_DB     # change if you used a different database name
+    schema: raw
+    description: "Raw / Bronze layer, landed by 01_create_raw_tables.sql (or, later, any_script.py)."
+    tables:
+      - name: raw_customers
+        description: "One row per customer, as landed. Untyped, unclean."
+      - name: raw_orders
+        description: "One row per order, as landed."
+      - name: raw_payments
+        description: "One row per payment, as landed. Amount is stored as text."
+      - name: raw_bank_marketing
+        description: "Bank marketing campaign data (job, balance, contact outcome, deposit subscription) from bank.csv."

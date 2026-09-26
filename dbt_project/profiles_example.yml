@@ -1,0 +1,20 @@
+# Copy this file to ~/.dbt/profiles.yml and fill in your own values.
+# NEVER commit your real profiles.yml (see .gitignore).
+
+elt_learning_project:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: <your_account_locator>        # e.g. ab12345.eu-central-1
+
+      user: <your_username>
+      password: <your_password>              # or use a key-pair / SSO config instead
+
+      role: <your_role>                      # e.g. ACCOUNTADMIN or a custom role
+      database: ELT_LEARNING_DB
+      warehouse: ELT_LEARNING_WH
+      schema: DBT                            # base schema; staging/marts override this per-folder
+
+      threads: 4
+      client_session_keep_alive: False

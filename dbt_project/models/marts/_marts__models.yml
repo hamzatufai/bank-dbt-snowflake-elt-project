@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: fct_orders
+    description: "One row per order, joined to its payments. Grain: order_id."
+    columns:
+      - name: order_id
+        description: "Primary key of this table."
+
+  - name: dim_customers
+    description: "One row per customer with lifetime order stats. Grain: customer_id."
+    columns:
+      - name: customer_id
+        description: "Primary key of this table."
+
+  - name: bank_campaign_summary
+    description: "Subscription rate and avg balance/call duration, grouped by job, marital status, and education."
