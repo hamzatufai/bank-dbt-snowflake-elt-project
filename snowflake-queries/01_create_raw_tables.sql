@@ -116,9 +116,18 @@ CREATE OR REPLACE STAGE BANK_CSV_STAGE
 -- PUT file://bank.csv @BANK_CSV_STAGE;
 
 COPY INTO RAW_BANK_MARKETING
-    FROM @BANK_CSV_STAGE/bank.csv
+    FROM (SELECT $1::INT, $2::STRING, $3::STRING, $4::STRING, $5::STRING,
+                 $6::INT, $7::STRING, $8::STRING, $9::STRING, $10::INT,
+                 $11::STRING, $12::INT, $13::INT, $14::INT, $15::INT,
+                 $16::STRING, $17::STRING
+          FROM @BANK_CSV_STAGE/bank.csv)
     FILE_FORMAT = CSV_STANDARD
     ON_ERROR = 'CONTINUE';
+
+-- NOTE: do not use the (FROM (SELECT $1, $2 ... )) shorthand without explicit
+-- casts: COPY INTO would then generate positional column aliases like
+-- "DEFAULT", producing "invalid identifier 'DEFAULT'" unless the target
+-- table is (re)created with quoted identifiers as well.
 
 -- Option B: skip the stage entirely and use ../any_script.py instead,
 -- which downloads the CSV from GitHub and loads it with write_pandas().

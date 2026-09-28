@@ -110,7 +110,24 @@ def main():
     # Load DataFrame into Snowflake
     # ---------------------------------------------------------
 
-    success, nchunks, nrows, _ = write_pandas(conn, df, table_name)
+    # quote_identifiers=True quotes all column names in the generated COPY
+    # INTO statement. Required because the CSV has a column named DEFAULT,
+    # which is a Snowflake reserved keyword and breaks the load otherwise.
+    # auto_create_table=True + overwrite=True let the connector rebuild the
+    # target table from the DataFrame schema (using quoted identifiers) and
+    # swap it in atomically. This keeps the load idempotent and immune to a
+    # stale pre-existing table whose columns don't match the CSV — which is
+    # exactly what produced the original "invalid identifier 'DEFAULT'" error:
+    # the connector quoted "DEFAULT" in COPY INTO, but the old table had been
+    # created without a DEFAULT column, so Snowflake rejected the identifier.
+    success, nchunks, nrows, _ = write_pandas(
+        conn,
+        df,
+        table_name,
+        quote_identifiers=True,
+        auto_create_table=True,
+        overwrite=True,
+    )
 
     # ---------------------------------------------------------
     # Result
