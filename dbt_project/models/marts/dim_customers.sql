@@ -1,6 +1,6 @@
 -- Mart model: one row per customer with lifetime totals.
 -- Materialized as a TABLE -> lands in the GOLD schema.
--- Depends on fct_orders, which is why we {{ ref() }} it below --
+-- Depends on fct_orders, which is why we ref() it below --
 -- dbt uses this to build the dependency graph automatically.
 
 with customers as (

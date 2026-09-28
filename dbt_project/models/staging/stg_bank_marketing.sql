@@ -14,7 +14,7 @@ cleaned as (
         lower(trim(job))                            as job,
         lower(trim(marital))                        as marital,
         lower(trim(education))                      as education,
-        iff(lower("default") = 'yes', true, false)  as has_credit_default,
+        iff(lower("DEFAULT") = 'yes', true, false)  as has_credit_default,
         balance,
         iff(lower(housing) = 'yes', true, false)    as has_housing_loan,
         iff(lower(loan) = 'yes', true, false)       as has_personal_loan,
